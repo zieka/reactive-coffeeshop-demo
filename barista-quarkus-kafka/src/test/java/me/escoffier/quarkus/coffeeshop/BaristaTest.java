@@ -6,14 +6,14 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.reactive.messaging.connectors.InMemoryConnector;
 import io.smallrye.reactive.messaging.connectors.InMemorySink;
 import io.smallrye.reactive.messaging.connectors.InMemorySource;
+import java.util.List;
+import javax.enterprise.inject.Any;
+import javax.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.enterprise.inject.Any;
-import javax.inject.Inject;
-import java.util.List;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 @QuarkusTest
@@ -40,9 +40,9 @@ class BaristaTest {
 
         Beverage queuedBeverage = queue.received().get(0).getPayload();
         Assertions.assertEquals(Beverage.State.READY, queuedBeverage.preparationState);
-        Assertions.assertEquals("coffee", queuedBeverage.beverage);
-        Assertions.assertEquals("Coffee lover", queuedBeverage.customer);
-        Assertions.assertEquals("1234", queuedBeverage.orderId);
+        assertThat(queuedBeverage.beverage).isEqualTo("coffee");
+        assertThat(queuedBeverage.customer).isEqualTo("Coffee lover");
+        assertThat(queuedBeverage.orderId).isEqualTo("1234");
     }
 
 }
